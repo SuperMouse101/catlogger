@@ -1,3 +1,3 @@
-# catlogger
+# Cat Logger
 
-A new Flutter project.
+This is made for my web and mobile app class
