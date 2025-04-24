@@ -1,7 +1,7 @@
 /* Cat Logger Metric Page.*/
 import 'package:flutter/material.dart';
 
-import 'main.dart';
+import 'home.dart';
 import 'user_settings.dart';
 
 class MyMetricPage extends StatefulWidget {

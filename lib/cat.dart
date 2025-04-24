@@ -1,7 +1,7 @@
 /* Cat Logger Main Cat Page.*/
 import 'package:flutter/material.dart';
 
-import 'main.dart';
+import 'home.dart';
 import 'user_settings.dart';
 
 class MyCatPage extends StatefulWidget {
