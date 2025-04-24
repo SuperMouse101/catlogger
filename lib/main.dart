@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'data_functions.dart';
 
 import 'home.dart';
+import 'auth.dart';
 
 final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const MyHomePage(),
+      builder: (context, state) {
+        if(FirebaseAuth.instance.currentUser == null) {
+          return const AuthPage();
+        } else {
+          return const MyHomePage();
+        }
+      }
     ),
   ],
 );
 
 void main() async{
-  initializeDatabase();
   runApp(const MyApp());
 }
 
