@@ -8,22 +8,6 @@ import 'cat.dart';
 import 'metric.dart';
 import 'cat_settings.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Cat Logger',
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: Color.fromARGB(100, 90, 46, 171)
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
