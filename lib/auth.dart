@@ -1,4 +1,3 @@
-import 'package:catlogger/home.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,7 +12,7 @@ class AuthPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: () => context.go('/createuser'),
+            onPressed: () => context.go('/create'),
             child: const Text('Create Account'),
           ),
           ElevatedButton(
