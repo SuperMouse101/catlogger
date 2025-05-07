@@ -1,5 +1,7 @@
 /* Cat Logger User Settings Page.*/
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'home.dart';
 
@@ -11,6 +13,14 @@ class MyUserPage extends StatefulWidget {
 }
 
 class _MyUserPageState extends State<MyUserPage> {
+
+  Future<void> _signOutFirebase() async {
+    await FirebaseAuth.instance.signOut();
+    if(mounted){
+      context.go('/');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +48,20 @@ class _MyUserPageState extends State<MyUserPage> {
           )
         ],
       ),
-      body: Center(
-        child: Text(
-          "WIP",
-          style: TextStyle(color: Color.fromARGB(255,255,255,255)),
-        )
+      body: Column(
+        children: [
+          Card(
+            child: ListTile(
+              textColor: Color.fromARGB(255, 0, 0, 0),
+              title: const Text("WIP"),
+            ),
+          ),
+          Spacer(),
+          ElevatedButton(
+            onPressed: _signOutFirebase,
+            child: const Text('Logout'),
+          ),
+        ],
       ),
     );
   }
