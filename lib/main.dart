@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'home.dart';
 import 'auth.dart';
 import 'create.dart';
+import 'login.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/create',
       builder: (context, state) => const CreateUser(title: 'Create Account'),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginPage(title: 'Login'),
     ),
   ],
 );
