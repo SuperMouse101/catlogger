@@ -2,6 +2,7 @@
 import 'package:catlogger/cat.dart';
 import 'package:catlogger/metric.dart';
 import 'package:flutter/material.dart';
+import 'data_functions.dart';
 
 import 'home.dart';
 import 'user_settings.dart';
@@ -74,9 +75,46 @@ class _MySettingsPageState extends State<MySettingsPage> {
         ],
       ),
       body: Center(
-        child: Text(
-          "WIP Settings",
-          style: TextStyle(color: Color.fromARGB(255,255,255,255)),
+        child: TextButton(
+          onPressed: () {
+            showDialog(
+              context: context, 
+              builder: (BuildContext context) { 
+                return AlertDialog(
+                  title: Text('Are You Sure You want to Delete ${curr['name']}?'),
+                  content: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            deleteData(curr);
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => const MyHomePage()),
+                            );
+                          });
+                        }, 
+                        child: Text("Delete")
+                      ),
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      Spacer()
+                    ],
+                  ),
+                );
+              }
+            );
+          },
+          style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
+          child: const Text(
+            "Delete Cat",
+            style: TextStyle(color: Color.fromARGB(255,255,255,255)),
+          ),
         )
       ),
       bottomNavigationBar: BottomNavigationBar(
