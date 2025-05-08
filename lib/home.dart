@@ -46,7 +46,12 @@ class _MyHomePageState extends State<MyHomePage> {
         if (data != null) {
           incomingData.add({
             'name': data['name'],
-            'age': data['age']
+            'age': data['age'],
+            'uid': data['uid'],
+            'breed': data['breed'],
+            'date': data['date'],
+            'weight': data['weight'],
+            'desc': data['desc']
           });
         }
       }
@@ -102,11 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     const SizedBox(width: 6),
                     // Image container WIP
-                    Container(
-                      width: 60,
-                      height: 60,
-                      color: Colors.grey[300],
-                      child: const Center(child: Text('No Image'))
+                    SizedBox(
+                      width: 80.0,
+                      height: 80.0,
+                      child: CircleAvatar(
+                        // ... image or placeholder
+                      ),
                     ),
                     const SizedBox(width: 6),
                     // Name and Age Column
@@ -118,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: TextStyle(color: Color.fromARGB(255,255,255,255)),
                         ),
                         Text( // Age WIP
-                          "${curr['age']}",
+                          "Age: ${curr['age']}",
                           style: TextStyle(color: Color.fromARGB(255,255,255,255)),
                         ),
                         Spacer()
