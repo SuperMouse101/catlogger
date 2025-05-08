@@ -1,4 +1,5 @@
 /* Cat Logger User Settings Page.*/
+import 'package:catlogger/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +19,10 @@ class _MyUserPageState extends State<MyUserPage> {
     await FirebaseAuth.instance.signOut();
     if(mounted){
       context.go('/');
+      Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => const AuthPage()),
+      );
     }
   }
 

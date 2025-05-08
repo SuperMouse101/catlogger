@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'auth.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.title});
   
@@ -31,6 +33,18 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 34, 34, 34),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => const AuthPage()),
+            );
+          }, 
+          icon: Icon(Icons.arrow_back, color: Color.fromARGB(255,255,255,255),)
+        ),
+      ),
       body: Container(
         margin: const EdgeInsets.all(16),
         child: Form(
@@ -40,9 +54,12 @@ class _LoginPageState extends State<LoginPage> {
               Spacer(),
               TextFormField(
                 controller: _emailController,
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Email *',
                   icon: Icon(Icons.person),
+                  iconColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 validator:(value) {
                   if(value == null || value.isEmpty){
@@ -56,9 +73,12 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
                 autocorrect: false,
                 enableSuggestions: false,
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Password *',
                   icon: Icon(Icons.password),
+                  iconColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 validator:(value) {
                   if(value == null || value.isEmpty){
@@ -72,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               ElevatedButton(
                 onPressed: _login,
-                child: const Text('Create an Account'),
+                child: const Text('Login'),
               ),
               Spacer()
             ],

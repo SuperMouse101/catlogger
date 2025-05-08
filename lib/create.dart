@@ -1,3 +1,4 @@
+import 'package:catlogger/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +32,18 @@ class _CreateUserState extends State<CreateUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 34, 34, 34),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => const AuthPage()),
+            );
+          }, 
+          icon: Icon(Icons.arrow_back, color: Color.fromARGB(255,255,255,255),)
+        ),
+      ),
       body: Container(
         margin: const EdgeInsets.all(16),
         child: Form(
@@ -40,9 +53,12 @@ class _CreateUserState extends State<CreateUser> {
               Spacer(),
               TextFormField(
                 controller: _emailController,
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Email *',
                   icon: Icon(Icons.person),
+                  iconColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 validator:(value) {
                   if(value == null || value.isEmpty){
@@ -56,9 +72,12 @@ class _CreateUserState extends State<CreateUser> {
                 obscureText: true,
                 autocorrect: false,
                 enableSuggestions: false,
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Password *',
                   icon: Icon(Icons.password),
+                  iconColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 validator:(value) {
                   if(value == null || value.isEmpty){
@@ -74,9 +93,12 @@ class _CreateUserState extends State<CreateUser> {
                 obscureText: true,
                 autocorrect: false,
                 enableSuggestions: false,
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Comfirm Password *',
                   icon: Icon(Icons.password),
+                  iconColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 validator:(value) {
                   if(value != _passwordController.text){
