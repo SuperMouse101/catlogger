@@ -200,12 +200,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ageValue = int.parse(age);
                                   return null;
                                 },
+                                keyboardType: TextInputType.numberWithOptions(),
                               ),
                             ],
                           )
                         ),
                         actions: <Widget>[ 
-                          TextButton( // Add action. Adds your cat with the name set above
+                          TextButton( // Add action. Adds your cat with the name and age set above
                             child: const Text('Add'),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
@@ -227,7 +228,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       );
-                    },);
+                    },
+                  );
                 },
                 icon: const Icon(Icons.add),
                 label: const Text(

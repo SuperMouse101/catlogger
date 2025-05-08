@@ -20,6 +20,7 @@ class MyCatPage extends StatefulWidget {
 
 class _MyCatPageState extends State<MyCatPage> {
   Map<String, dynamic> curr = {};
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _MyCatPageState extends State<MyCatPage> {
       return DateFormat('yyyy-MM-dd').format(dateValue);
     } else {
       // Handle cases where 'date' might be null or a different unexpected type
-      return 'N/A'; // Or throw an error, log a warning, etc.
+      return ''; // Or throw an error, log a warning, etc.
     }
   }
 
@@ -129,7 +130,117 @@ class _MyCatPageState extends State<MyCatPage> {
                     IconButton(
                       icon: const Icon(Icons.edit, color: Colors.white),
                       onPressed: () {
-                        // Handle edit action
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Update ${curr['name']}'),
+                              content: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      initialValue: curr['name'],
+                                      decoration: const InputDecoration(hintText: 'Cats name'),
+                                      validator: (String? name) {
+                                        if (name == null || name.isEmpty) {
+                                          return 'Please enter the cats name';
+                                        }
+                                        //value = name;
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      initialValue: '${curr['age']}',
+                                      decoration: const InputDecoration(hintText: 'Cats age'),
+                                      validator: (age) {
+                                        if (age!.isEmpty) {
+                                          return 'Please enter the cats age';
+                                        }
+                                        else if(int.parse(age) < 0 && int.parse(age) > 25) {
+                                          return 'Age must be within 0-25';
+                                        }
+                                        //ageValue = int.parse(age);
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.numberWithOptions(),
+                                    ),
+                                    TextFormField(
+                                      initialValue: curr['breed'],
+                                      decoration: const InputDecoration(hintText: 'Cats breed'),
+                                      validator: (breed) {
+                                        if (breed!.isEmpty) {
+                                          return null;
+                                        }
+                                        //ageValue = int.parse(age);
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      initialValue: currDate(),
+                                      decoration: const InputDecoration(hintText: 'Cats Birth Date'),
+                                      validator: (date) {
+                                        if (date!.isEmpty) {
+                                          return null;
+                                        }
+                                        //ageValue = int.parse(age);
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.datetime,
+                                    ),
+                                    TextFormField(
+                                      initialValue:  curr['weight'] == null ? '' : '${curr['weight']}',
+                                      decoration: const InputDecoration(hintText: 'Cats weight'),
+                                      validator: (age) {
+                                        if (age!.isEmpty) {
+                                          return null;
+                                        }
+                                        else if(int.parse(age) < 0) {
+                                          return 'Weight can not be below 0';
+                                        }
+                                        //ageValue = int.parse(age);
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.numberWithOptions(),
+                                    ),
+                                    TextFormField(
+                                      initialValue: curr['desc'],
+                                      decoration: const InputDecoration(hintText: 'Cats Description'),
+                                      validator: (desc) {
+                                        if (desc!.isEmpty) {
+                                          return null;
+                                        }
+                                        //ageValue = int.parse(age);
+                                        return null;
+                                      },
+                                      maxLines: 5,
+                                      keyboardType: TextInputType.multiline
+                                    ),
+                                  ],
+                                )
+                              ),
+                              actions: <Widget>[ 
+                                TextButton( // Update action. Updates your cat with the info above
+                                  child: const Text('Update'),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        
+                                      });
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                ),
+                                TextButton( // Cancel action.
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                   ],
