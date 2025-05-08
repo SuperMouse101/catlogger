@@ -2,6 +2,8 @@
 import 'package:catlogger/cat_settings.dart';
 import 'package:catlogger/metric.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'data_functions.dart';
 
 import 'home.dart';
@@ -24,6 +26,22 @@ class _MyCatPageState extends State<MyCatPage> {
     super.initState();
 
     curr = widget.curr;
+  }
+
+  String currDate() {
+    final dynamic dateValue = curr['date'];
+
+    if (dateValue is Timestamp) {
+      // Convert Firebase Timestamp to Dart DateTime
+      DateTime dateTime = dateValue.toDate();
+      return DateFormat('yyyy-MM-dd').format(dateTime);
+    } else if (dateValue is DateTime) {
+      // If it's already a DateTime, format it directly
+      return DateFormat('yyyy-MM-dd').format(dateValue);
+    } else {
+      // Handle cases where 'date' might be null or a different unexpected type
+      return 'N/A'; // Or throw an error, log a warning, etc.
+    }
   }
 
   void _onItemTapped(int index) {
@@ -140,7 +158,7 @@ class _MyCatPageState extends State<MyCatPage> {
                         ),
                         if(curr['date'] != null) 
                           Text(
-                            curr['date'],
+                            currDate(),
                             style: TextStyle(color: Colors.white),
                           )
                       ],
