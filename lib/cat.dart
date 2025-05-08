@@ -7,31 +7,41 @@ import 'home.dart';
 import 'user_settings.dart';
 
 class MyCatPage extends StatefulWidget {
-  const MyCatPage({super.key});
+  const MyCatPage({super.key, required this.curr});
+
+  final Map<String, dynamic> curr;
 
   @override
   State<MyCatPage> createState() => _MyCatPageState();
 }
 
 class _MyCatPageState extends State<MyCatPage> {
+  Map<String, dynamic> curr = {};
 
-    void _onItemTapped(int index) {
+  @override
+  void initState() {
+    super.initState();
+
+    curr = widget.curr;
+  }
+
+  void _onItemTapped(int index) {
     if(index == 0) {
       Navigator.push(
         context, 
-        MaterialPageRoute(builder: (context) => const MyCatPage()),
+        MaterialPageRoute(builder: (context) =>  MyCatPage(curr: curr)),
       );
     }
     else if(index == 1) {
       Navigator.push(
         context, 
-        MaterialPageRoute(builder: (context) => const MyMetricPage()),
+        MaterialPageRoute(builder: (context) => MyMetricPage(curr: curr)),
       );
     }
     else if(index == 2) {
       Navigator.push(
         context, 
-        MaterialPageRoute(builder: (context) => const MySettingsPage()),
+        MaterialPageRoute(builder: (context) => MySettingsPage(curr: curr)),
       );
     }
   }
@@ -65,7 +75,7 @@ class _MyCatPageState extends State<MyCatPage> {
       ),
       body: Center(
         child: Text(
-          "WIP Cats",
+          curr['name'],
           style: TextStyle(color: Color.fromARGB(255,255,255,255)),
         )
       ),

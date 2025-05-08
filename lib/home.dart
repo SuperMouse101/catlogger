@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => const MyCatPage()),
+                          MaterialPageRoute(builder: (context) => MyCatPage(curr: curr)),
                         );
                       }, 
                       icon: Icon(Icons.home, color: Color.fromARGB(255,255,255,255),)
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => const MyMetricPage()),
+                          MaterialPageRoute(builder: (context) => MyMetricPage(curr: curr)),
                         );
                       }, 
                       icon: Icon(Icons.bar_chart, color: Color.fromARGB(255,255,255,255),)
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => const MySettingsPage()),
+                          MaterialPageRoute(builder: (context) => MySettingsPage(curr: curr)),
                         );
                       }, 
                       icon: Icon(Icons.settings, color: Color.fromARGB(255,255,255,255),)

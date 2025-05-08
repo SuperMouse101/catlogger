@@ -7,31 +7,41 @@ import 'home.dart';
 import 'user_settings.dart';
 
 class MySettingsPage extends StatefulWidget {
-  const MySettingsPage({super.key});
+  const MySettingsPage({super.key, required this.curr});
+
+  final Map<String, dynamic> curr;
 
   @override
   State<MySettingsPage> createState() => _MySettingsPageState();
 }
 
 class _MySettingsPageState extends State<MySettingsPage> {
+  Map<String, dynamic> curr = {};
 
-    void _onItemTapped(int index) {
+  @override
+  void initState() {
+    super.initState();
+
+    curr = widget.curr;
+  }
+
+  void _onItemTapped(int index) {
     if(index == 0) {
       Navigator.push(
         context, 
-        MaterialPageRoute(builder: (context) => const MyCatPage()),
+        MaterialPageRoute(builder: (context) => MyCatPage(curr: curr)),
       );
     }
     else if(index == 1) {
       Navigator.push(
         context, 
-        MaterialPageRoute(builder: (context) => const MyMetricPage()),
+        MaterialPageRoute(builder: (context) => MyMetricPage(curr: curr)),
       );
     }
     else if(index == 2) {
       Navigator.push(
         context, 
-        MaterialPageRoute(builder: (context) => const MySettingsPage()),
+        MaterialPageRoute(builder: (context) => MySettingsPage(curr: curr)),
       );
     }
   }
