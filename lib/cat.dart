@@ -22,6 +22,14 @@ class _MyCatPageState extends State<MyCatPage> {
   Map<String, dynamic> curr = {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // for dialog box
+  String? name;
+  int? age;
+  String? breed;
+  Timestamp? date;
+  int? weight;
+  String? desc;
+
   @override
   void initState() {
     super.initState();
@@ -146,7 +154,7 @@ class _MyCatPageState extends State<MyCatPage> {
                                         if (name == null || name.isEmpty) {
                                           return 'Please enter the cats name';
                                         }
-                                        //value = name;
+                                        this.name = name;
                                         return null;
                                       },
                                     ),
@@ -160,7 +168,7 @@ class _MyCatPageState extends State<MyCatPage> {
                                         else if(int.parse(age) < 0 && int.parse(age) > 25) {
                                           return 'Age must be within 0-25';
                                         }
-                                        //ageValue = int.parse(age);
+                                        this.age = int.parse(age);
                                         return null;
                                       },
                                       keyboardType: TextInputType.numberWithOptions(),
@@ -172,7 +180,7 @@ class _MyCatPageState extends State<MyCatPage> {
                                         if (breed!.isEmpty) {
                                           return null;
                                         }
-                                        //ageValue = int.parse(age);
+                                        this.breed = breed;
                                         return null;
                                       },
                                     ),
@@ -183,22 +191,29 @@ class _MyCatPageState extends State<MyCatPage> {
                                         if (date!.isEmpty) {
                                           return null;
                                         }
-                                        //ageValue = int.parse(age);
-                                        return null;
+                                        try {
+                                          // Try to parse the input string into a DateTime
+                                          DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+                                          // If parsing is successful, format it back to the desired string format
+                                          this.date = Timestamp.fromDate(parsedDate);
+                                          return null; // Validation successful
+                                        } catch (e) {
+                                          return 'Please enter a valid date in YYYY-MM-DD format'; // Validation failed
+                                        }
                                       },
                                       keyboardType: TextInputType.datetime,
                                     ),
                                     TextFormField(
                                       initialValue:  curr['weight'] == null ? '' : '${curr['weight']}',
                                       decoration: const InputDecoration(hintText: 'Cats weight'),
-                                      validator: (age) {
-                                        if (age!.isEmpty) {
+                                      validator: (weight) {
+                                        if (weight!.isEmpty) {
                                           return null;
                                         }
-                                        else if(int.parse(age) < 0) {
+                                        else if(int.parse(weight) < 0) {
                                           return 'Weight can not be below 0';
                                         }
-                                        //ageValue = int.parse(age);
+                                        this.weight = int.parse(weight);
                                         return null;
                                       },
                                       keyboardType: TextInputType.numberWithOptions(),
@@ -210,7 +225,7 @@ class _MyCatPageState extends State<MyCatPage> {
                                         if (desc!.isEmpty) {
                                           return null;
                                         }
-                                        //ageValue = int.parse(age);
+                                        this.desc = desc;
                                         return null;
                                       },
                                       maxLines: 5,
@@ -225,7 +240,13 @@ class _MyCatPageState extends State<MyCatPage> {
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
                                       setState(() {
-                                        
+                                        curr['name'] = name;
+                                        curr['age'] = age;
+                                        curr['breed'] = breed;
+                                        curr['date'] = date;
+                                        curr['weight'] = weight;
+                                        curr['desc'] = desc;
+                                        updateData(curr);
                                       });
                                       Navigator.of(context).pop();
                                     }

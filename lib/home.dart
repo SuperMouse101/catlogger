@@ -51,7 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
             'breed': data['breed'],
             'date': data['date'],
             'weight': data['weight'],
-            'desc': data['desc']
+            'desc': data['desc'],
+            'id': doc.id
           });
         }
       }
