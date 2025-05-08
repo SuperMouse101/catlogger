@@ -2,6 +2,7 @@
 import 'package:catlogger/cat.dart';
 import 'package:catlogger/cat_settings.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 import 'home.dart';
 import 'user_settings.dart';
@@ -17,6 +18,8 @@ class MyMetricPage extends StatefulWidget {
 
 class _MyMetricPageState extends State<MyMetricPage> {
   Map<String, dynamic> curr = {};
+  int? type;
+  double? rer;
 
   List<DropdownMenuEntry<dynamic>> entries = [
     const DropdownMenuEntry(value: 'Severly Underweight', label: 'Severly Underweight'), 
@@ -127,10 +130,30 @@ class _MyMetricPageState extends State<MyMetricPage> {
                 ),
                 DropdownMenu(
                   dropdownMenuEntries: entries,
-                  initialSelection: 4,
+                  //initialSelection: 4,
                   textStyle: TextStyle(color: Colors.white),
-                  
-                )
+                  onSelected: (value) => type,
+                ),
+                Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          rer = 70 * pow(curr['weight'], 0.75).toDouble();
+                        });
+                      }, 
+                      style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.grey)),
+                      child: const Text("Calculate")
+                    ),
+                    Spacer()
+                  ]
+                ),
+                if(rer != null)
+                  Text(
+                    'RER: $rer',
+                    style: TextStyle(color: Colors.white)
+                  )
               ]
             ), 
           ),
