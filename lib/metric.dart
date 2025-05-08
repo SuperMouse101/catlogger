@@ -151,7 +151,7 @@ class _MyMetricPageState extends State<MyMetricPage> {
                 ),
                 if(rer != null)
                   Text(
-                    'RER: $rer',
+                    'RER/First half of calculation: $rer',
                     style: TextStyle(color: Colors.white)
                   )
               ]
