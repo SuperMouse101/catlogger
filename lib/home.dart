@@ -188,8 +188,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   if (age!.isEmpty) {
                                     return 'Please enter the cats age';
                                   }
-                                  else if(int.parse(age) > 0 && int.parse(age) < 25) {
-                                    return 'Please enter a number between 0-25';
+                                  else if(int.parse(age) < 0 && int.parse(age) > 25) {
+                                    return 'Age must be within 0-25';
                                   }
                                   ageValue = int.parse(age);
                                   return null;
