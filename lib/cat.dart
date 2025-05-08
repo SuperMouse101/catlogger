@@ -272,12 +272,12 @@ class _MyCatPageState extends State<MyCatPage> {
                       children: [
                         const Text(
                           'Breed:',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white70),
                         ),
                         if(curr['breed'] != null) 
                           Text(
                             curr['breed'],
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white70),
                           )
                       ],
                     ),
@@ -286,12 +286,12 @@ class _MyCatPageState extends State<MyCatPage> {
                       children: [
                         Text(
                           'Birth Date:',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white70),
                         ),
                         if(curr['date'] != null) 
                           Text(
                             currDate(),
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white70),
                           )
                       ],
                     ),
@@ -300,12 +300,12 @@ class _MyCatPageState extends State<MyCatPage> {
                       children: [
                         Text(
                           'Weight:',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white70),
                         ),
                         if(curr['weight'] != null) 
                           Text(
                             "${curr['weight']}",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white70),
                           )
                       ],
                     ),

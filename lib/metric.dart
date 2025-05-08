@@ -18,6 +18,18 @@ class MyMetricPage extends StatefulWidget {
 class _MyMetricPageState extends State<MyMetricPage> {
   Map<String, dynamic> curr = {};
 
+  List<DropdownMenuEntry<dynamic>> entries = [
+    const DropdownMenuEntry(value: 'Severly Underweight', label: 'Severly Underweight'), 
+    const DropdownMenuEntry(value: 'Very Thin', label: 'Very Thin'),
+    const DropdownMenuEntry(value: 'Thin', label: 'Thin'),
+    const DropdownMenuEntry(value: 'Slightly Underweight', label: 'Slightly Underweight'),
+    const DropdownMenuEntry(value: 'Ideal Weigth', label: 'Ideal Weigth'),
+    const DropdownMenuEntry(value: 'Slightly Overweight', label: 'Slightly Overweight'),
+    const DropdownMenuEntry(value: 'Markedly Overweight', label: 'Markedly Overweight'),
+    const DropdownMenuEntry(value: 'Obese', label: 'Obese'),
+    const DropdownMenuEntry(value: 'Clinically Obese', label: 'Clinically Obese'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -73,11 +85,56 @@ class _MyMetricPageState extends State<MyMetricPage> {
           )
         ],
       ),
-      body: Center(
-        child: Text(
-          "WIP Metrics",
-          style: TextStyle(color: Color.fromARGB(255,255,255,255)),
-        )
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          color: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 80.0,
+                      height: 80.0,
+                      child: CircleAvatar(
+                        // WIP
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            curr['name'], 
+                            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white)
+                          ),
+                          Text(
+                            "Age: ${curr['age']}", 
+                            style: TextStyle(color: Colors.white70)
+                          ),
+                          Text(
+                            "Weight: ${curr['weight']}",
+                            style: TextStyle(color: Colors.white70)
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]
+                ),
+                DropdownMenu(
+                  dropdownMenuEntries: entries,
+                  initialSelection: 4,
+                  textStyle: TextStyle(color: Colors.white),
+                  
+                )
+              ]
+            ), 
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
