@@ -1,4 +1,6 @@
 /* Cat Logger Metric Page.*/
+import 'package:catlogger/cat.dart';
+import 'package:catlogger/cat_settings.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -12,6 +14,28 @@ class MyMetricPage extends StatefulWidget {
 }
 
 class _MyMetricPageState extends State<MyMetricPage> {
+
+  void _onItemTapped(int index) {
+    if(index == 0) {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => const MyCatPage()),
+      );
+    }
+    else if(index == 1) {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => const MyMetricPage()),
+      );
+    }
+    else if(index == 2) {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => const MySettingsPage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +65,21 @@ class _MyMetricPageState extends State<MyMetricPage> {
       ),
       body: Center(
         child: Text(
-          "WIP",
+          "WIP Metrics",
           style: TextStyle(color: Color.fromARGB(255,255,255,255)),
         )
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Metrics'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+        currentIndex: 1,
+        selectedItemColor: Color.fromARGB(255, 79, 16, 197),
+        unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        onTap: _onItemTapped,
       ),
     );
   }
