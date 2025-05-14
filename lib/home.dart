@@ -46,7 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
         if (data != null) {
           incomingData.add({
             'name': data['name'],
-            'age': data['age']
+            'age': data['age'],
+            'uid': data['uid'],
+            'breed': data['breed'],
+            'date': data['date'],
+            'weight': data['weight'],
+            'desc': data['desc'],
+            'id': doc.id
           });
         }
       }
@@ -102,11 +108,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     const SizedBox(width: 6),
                     // Image container WIP
-                    Container(
-                      width: 60,
-                      height: 60,
-                      color: Colors.grey[300],
-                      child: const Center(child: Text('No Image'))
+                    SizedBox(
+                      width: 80.0,
+                      height: 80.0,
+                      child: CircleAvatar(
+                        // ... image or placeholder
+                      ),
                     ),
                     const SizedBox(width: 6),
                     // Name and Age Column
@@ -118,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: TextStyle(color: Color.fromARGB(255,255,255,255)),
                         ),
                         Text( // Age WIP
-                          "${curr['age']}",
+                          "Age: ${curr['age']}",
                           style: TextStyle(color: Color.fromARGB(255,255,255,255)),
                         ),
                         Spacer()
@@ -130,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => const MyCatPage()),
+                          MaterialPageRoute(builder: (context) => MyCatPage(curr: curr)),
                         );
                       }, 
                       icon: Icon(Icons.home, color: Color.fromARGB(255,255,255,255),)
@@ -139,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => const MyMetricPage()),
+                          MaterialPageRoute(builder: (context) => MyMetricPage(curr: curr)),
                         );
                       }, 
                       icon: Icon(Icons.bar_chart, color: Color.fromARGB(255,255,255,255),)
@@ -148,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => const MySettingsPage()),
+                          MaterialPageRoute(builder: (context) => MySettingsPage(curr: curr)),
                         );
                       }, 
                       icon: Icon(Icons.settings, color: Color.fromARGB(255,255,255,255),)
@@ -194,12 +201,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ageValue = int.parse(age);
                                   return null;
                                 },
+                                keyboardType: TextInputType.numberWithOptions(),
                               ),
                             ],
                           )
                         ),
                         actions: <Widget>[ 
-                          TextButton( // Add action. Adds your cat with the name set above
+                          TextButton( // Add action. Adds your cat with the name and age set above
                             child: const Text('Add'),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
@@ -221,7 +229,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       );
-                    },);
+                    },
+                  );
                 },
                 icon: const Icon(Icons.add),
                 label: const Text(
