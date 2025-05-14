@@ -1,4 +1,6 @@
 /* Cat Logger Metric Page.*/
+import 'dart:collection';
+
 import 'package:catlogger/cat.dart';
 import 'package:catlogger/cat_settings.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,29 @@ import 'dart:math';
 import 'home.dart';
 import 'user_settings.dart';
 
+typedef WeightEntry = DropdownMenuEntry<Weightlabel>;
+
+enum Weightlabel {
+  severlyUnderweight("Severly Underweight"),
+  veryThin("Very Thin"),
+  thin("Thin"),
+  slightlyUnderweight("Slightly Underweight"),
+  ideal("Ideal Weight"),
+  slightlyOverweight("Slightly Overweight"),
+  remarkedlyOverweight("Remarkedly Overweight"),
+  obese("Obese"),
+  clinicallyObese("Clinically Obese");
+  
+  const Weightlabel(this.label);
+  final String label;
+
+  static final List<WeightEntry> entries = UnmodifiableListView<WeightEntry>(
+    values.map<WeightEntry>((Weightlabel value) => DropdownMenuEntry<Weightlabel>(
+      value: value,
+      label: value.label,
+    )),
+  );
+}
 class MyMetricPage extends StatefulWidget {
   const MyMetricPage({super.key, required this.curr});
 
@@ -18,20 +43,8 @@ class MyMetricPage extends StatefulWidget {
 
 class _MyMetricPageState extends State<MyMetricPage> {
   Map<String, dynamic> curr = {};
-  int? type;
-  double? rer;
-
-  List<DropdownMenuEntry<dynamic>> entries = [
-    const DropdownMenuEntry(value: 'Severly Underweight', label: 'Severly Underweight'), 
-    const DropdownMenuEntry(value: 'Very Thin', label: 'Very Thin'),
-    const DropdownMenuEntry(value: 'Thin', label: 'Thin'),
-    const DropdownMenuEntry(value: 'Slightly Underweight', label: 'Slightly Underweight'),
-    const DropdownMenuEntry(value: 'Ideal Weigth', label: 'Ideal Weigth'),
-    const DropdownMenuEntry(value: 'Slightly Overweight', label: 'Slightly Overweight'),
-    const DropdownMenuEntry(value: 'Markedly Overweight', label: 'Markedly Overweight'),
-    const DropdownMenuEntry(value: 'Obese', label: 'Obese'),
-    const DropdownMenuEntry(value: 'Clinically Obese', label: 'Clinically Obese'),
-  ];
+  double factor = 1;
+  double? mer;
 
   @override
   void initState() {
@@ -60,6 +73,35 @@ class _MyMetricPageState extends State<MyMetricPage> {
       );
     }
   }
+
+double getWeightIndex(Weightlabel label) {
+  if(curr["age"] == 0) {
+    return 2.4;
+  }
+  else if(curr["age"] > 14) {
+    return 1;
+  }
+  switch (label) {
+    case Weightlabel.severlyUnderweight:
+      return 1.7;
+    case Weightlabel.veryThin:
+      return 1.6;
+    case Weightlabel.thin:
+      return 1.5;
+    case Weightlabel.slightlyUnderweight:
+      return 1.4;
+    case Weightlabel.ideal:
+      return 1;
+    case Weightlabel.slightlyOverweight:
+      return 0.9;
+    case Weightlabel.remarkedlyOverweight:
+      return 0.8;
+    case Weightlabel.obese:
+      return 0.8;
+    case Weightlabel.clinicallyObese:
+      return 0.8;
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -128,11 +170,17 @@ class _MyMetricPageState extends State<MyMetricPage> {
                     ),
                   ]
                 ),
-                DropdownMenu(
-                  dropdownMenuEntries: entries,
-                  //initialSelection: 4,
+                DropdownMenu<Weightlabel>(
+                  dropdownMenuEntries: Weightlabel.entries,
+                  initialSelection: Weightlabel.ideal,
                   textStyle: TextStyle(color: Colors.white),
-                  onSelected: (value) => type,
+                  onSelected: (Weightlabel ?value) => {
+                    setState(() {
+                      if(value != null) {
+                        factor = getWeightIndex(value);
+                      }
+                    })
+                  },
                 ),
                 Row(
                   children: [
@@ -140,7 +188,7 @@ class _MyMetricPageState extends State<MyMetricPage> {
                     TextButton(
                       onPressed: () {
                         setState(() {
-                          rer = 70 * pow(curr['weight'], 0.75).toDouble();
+                          mer = (70 * pow(curr['weight'], 0.75).toDouble()) * factor;
                         });
                       }, 
                       style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.grey)),
@@ -149,9 +197,9 @@ class _MyMetricPageState extends State<MyMetricPage> {
                     Spacer()
                   ]
                 ),
-                if(rer != null)
+                if(mer != null)
                   Text(
-                    'RER/First half of calculation: $rer',
+                    '${mer?.toStringAsFixed(3)} calories per day',
                     style: TextStyle(color: Colors.white)
                   )
               ]
