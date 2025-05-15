@@ -42,13 +42,26 @@ class _MyCatPageState extends State<MyCatPage> {
     curr = widget.curr;
   }
 
-  Future<void> _getImage() async {
+  Future<void> _getImageGallery(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
+  Future<void> _getImageCamera(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
+        Navigator.of(context).pop();
       });
     }
   }
@@ -129,7 +142,41 @@ class _MyCatPageState extends State<MyCatPage> {
                 Row(
                   children: <Widget>[
                     GestureDetector(
-                      onDoubleTap: () => _getImage(),
+                      onDoubleTap: () => {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Cat Photo Chooser"),
+                              content: Form(
+                                key: _formKey,
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      onPressed: (){
+                                        _getImageCamera(context);
+                                      }, 
+                                      child: Text("Take Photo")
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        _getImageGallery(context);
+                                      },
+                                      child: Text("Gallary")
+                                    ),
+                                    TextButton( // Cancel action.
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ),
+                            );
+                          }
+                        )
+                      },
                       child: CircleAvatar(
                         radius: 40,
                         foregroundImage: _image != null ? FileImage(_image!) : null,

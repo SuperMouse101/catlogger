@@ -1,3 +1,4 @@
+import 'package:catlogger/data_functions.dart';
 import 'package:catlogger/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'login.dart';
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  CatImageDatabase.instance;
   runApp(const MyApp());
 }
 
