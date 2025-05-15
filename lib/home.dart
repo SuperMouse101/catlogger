@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'data_functions.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:async';
 
 import 'user_settings.dart';
 import 'cat.dart';
@@ -28,6 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String value = "";
   int ageValue = 0;
   int length = 0;
+  File? _image;
 
   @override
   void initState() {
@@ -112,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: 80.0,
                       height: 80.0,
                       child: CircleAvatar(
-                        // ... image or placeholder
+                        foregroundImage: _image != null ? FileImage(_image!) : null,
                       ),
                     ),
                     const SizedBox(width: 6),

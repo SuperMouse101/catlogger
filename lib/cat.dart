@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'data_functions.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:async';
 
 import 'home.dart';
 import 'user_settings.dart';
@@ -30,11 +33,24 @@ class _MyCatPageState extends State<MyCatPage> {
   int? weight;
   String? desc;
 
+  File? _image;
+
   @override
   void initState() {
     super.initState();
 
     curr = widget.curr;
+  }
+
+  Future<void> _getImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
   }
 
   String currDate() {
@@ -116,7 +132,7 @@ class _MyCatPageState extends State<MyCatPage> {
                       width: 80.0,
                       height: 80.0,
                       child: CircleAvatar(
-                        // WIP
+                        foregroundImage: _image != null ? FileImage(_image!) : null,
                       ),
                     ),
                     const SizedBox(width: 16.0),
