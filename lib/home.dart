@@ -127,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   children: [
                     const SizedBox(width: 6),
-                    // Image container WIP
                     SizedBox(
                       child: CircleAvatar(
                         radius: 40,
