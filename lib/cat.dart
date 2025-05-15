@@ -133,6 +133,7 @@ class _MyCatPageState extends State<MyCatPage> {
                       child: CircleAvatar(
                         radius: 40,
                         foregroundImage: _image != null ? FileImage(_image!) : null,
+                        child: _image == null ? const Icon(Icons.photo, size: 50) : null,
                       ),
                     ),
                     const SizedBox(width: 16.0),
