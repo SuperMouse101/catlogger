@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'data_functions.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:async';
 
 import 'home.dart';
 import 'user_settings.dart';
@@ -30,11 +33,84 @@ class _MyCatPageState extends State<MyCatPage> {
   int? weight;
   String? desc;
 
+  File? _image;
+  final CatImageDatabase _dbHelper = CatImageDatabase.instance;
+
   @override
   void initState() {
     super.initState();
 
     curr = widget.curr;
+    _loadImage();
+  }
+
+  Future<void> _loadImage() async {
+    final imageInfo = await _dbHelper.getCatImageById(curr["imageID"]);
+    if (imageInfo != null) {
+      setState(() {
+        _image = File(imageInfo.imagePath);
+      });
+    } else {
+      setState(() {
+        _image = null;
+      });
+    }
+  }
+
+  Future<void> _saveImageToDatabase(String imagePath) async {
+    try {
+      if(curr["imageID"] != null) {
+        await _dbHelper.deleteCatImage(curr["imageID"]);
+      }
+      int? insertedId = await _dbHelper.insertCatImage(imagePath, curr);
+      if(mounted) {
+        if (insertedId > 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Image saved!')),
+          );
+        } 
+        else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to save image')),
+          );
+        }
+      }
+    } catch (e) {
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving image.')),
+        );
+      }
+    }
+  }
+
+
+  Future<void> _getImageGallery(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
+      setState(() {
+        _image = File(pickedFile.path);
+        Navigator.of(context).pop();
+      });
+      await _saveImageToDatabase(imageFile.path);
+    }
+  }
+
+  Future<void> _getImageCamera(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
+      setState(() {
+        _image = File(pickedFile.path);
+        Navigator.of(context).pop();
+      });
+      await _saveImageToDatabase(imageFile.path);
+    }
   }
 
   String currDate() {
@@ -112,11 +188,46 @@ class _MyCatPageState extends State<MyCatPage> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    SizedBox(
-                      width: 80.0,
-                      height: 80.0,
+                    GestureDetector(
+                      onDoubleTap: () => {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Cat Photo Chooser"),
+                              content: Form(
+                                key: _formKey,
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      onPressed: (){
+                                        _getImageCamera(context);
+                                      }, 
+                                      child: Text("Take Photo")
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        _getImageGallery(context);
+                                      },
+                                      child: Text("Gallary")
+                                    ),
+                                    TextButton( // Cancel action.
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ),
+                            );
+                          }
+                        )
+                      },
                       child: CircleAvatar(
-                        // WIP
+                        radius: 40,
+                        foregroundImage: _image != null ? FileImage(_image!) : null,
+                        child: _image == null ? const Icon(Icons.photo, size: 50) : null,
                       ),
                     ),
                     const SizedBox(width: 16.0),

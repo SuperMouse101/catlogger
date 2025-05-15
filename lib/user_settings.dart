@@ -55,17 +55,18 @@ class _MyUserPageState extends State<MyUserPage> {
       ),
       body: Column(
         children: [
-          Card(
-            child: ListTile(
-              textColor: Color.fromARGB(255, 0, 0, 0),
-              title: const Text("WIP"),
-            ),
-          ),
           Spacer(),
-          ElevatedButton(
-            onPressed: _signOutFirebase,
-            child: const Text('Logout'),
+          Row(
+            children: [
+              Spacer(),
+              ElevatedButton(
+                onPressed: _signOutFirebase,
+                child: const Text('Logout'),
+              ),
+              Spacer()
+            ],
           ),
+          Spacer()
         ],
       ),
     );

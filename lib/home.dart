@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'data_functions.dart';
+import 'dart:io';
+import 'dart:async';
 
 import 'user_settings.dart';
 import 'cat.dart';
@@ -29,10 +31,26 @@ class _MyHomePageState extends State<MyHomePage> {
   int ageValue = 0;
   int length = 0;
 
+  File? _image;
+  final CatImageDatabase _dbHelper = CatImageDatabase.instance;
+
   @override
   void initState() {
     super.initState();
     _accessAllDocuments();
+  }
+
+  Future<void> _loadImage(Map<String, dynamic> curr) async {
+    final imageInfo = await _dbHelper.getCatImageById(curr["imageID"]);
+    if (imageInfo != null) {
+      setState(() {
+        _image = File(imageInfo.imagePath);
+      });
+    } else {
+      setState(() {
+        _image = null;
+      });
+    }
   }
 
   Future<void> _accessAllDocuments() async {
@@ -52,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
             'date': data['date'],
             'weight': data['weight'],
             'desc': data['desc'],
+            'imageID': data['imageID'],
             'id': doc.id
           });
         }
@@ -100,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // if the index is less than the length, it will list every cat you have
             if(index < entries.length) {
               final curr = entries[index];
+              _loadImage(curr);
               return Container(
                 height: 68,
                 color: Color.fromARGB(255, 34, 34, 34),
@@ -109,10 +129,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(width: 6),
                     // Image container WIP
                     SizedBox(
-                      width: 80.0,
-                      height: 80.0,
                       child: CircleAvatar(
-                        // ... image or placeholder
+                        radius: 40,
+                        foregroundImage: _image != null ? FileImage(_image!) : null,
+                        child: _image == null ? const Icon(Icons.photo, size: 50) : null,
                       ),
                     ),
                     const SizedBox(width: 6),
