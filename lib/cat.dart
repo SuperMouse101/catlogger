@@ -34,23 +34,68 @@ class _MyCatPageState extends State<MyCatPage> {
   String? desc;
 
   File? _image;
+  final CatImageDatabase _dbHelper = CatImageDatabase.instance;
 
   @override
   void initState() {
     super.initState();
 
     curr = widget.curr;
+    _loadImage();
   }
+
+  Future<void> _loadImage() async {
+    final imageInfo = await _dbHelper.getCatImageById(curr["imageID"]);
+    if (imageInfo != null) {
+      setState(() {
+        _image = File(imageInfo.imagePath);
+      });
+    } else {
+      setState(() {
+        _image = null;
+      });
+    }
+  }
+
+  Future<void> _saveImageToDatabase(String imagePath) async {
+    try {
+      if(curr["imageID"] != null) {
+        await _dbHelper.deleteCatImage(curr["imageID"]);
+      }
+      int? insertedId = await _dbHelper.insertCatImage(imagePath, curr);
+      if(mounted) {
+        if (insertedId > 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Image saved!')),
+          );
+        } 
+        else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to save image')),
+          );
+        }
+      }
+    } catch (e) {
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving image.')),
+        );
+      }
+    }
+  }
+
 
   Future<void> _getImageGallery(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
       setState(() {
         _image = File(pickedFile.path);
         Navigator.of(context).pop();
       });
+      await _saveImageToDatabase(imageFile.path);
     }
   }
 
@@ -59,10 +104,12 @@ class _MyCatPageState extends State<MyCatPage> {
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
       setState(() {
         _image = File(pickedFile.path);
         Navigator.of(context).pop();
       });
+      await _saveImageToDatabase(imageFile.path);
     }
   }
 

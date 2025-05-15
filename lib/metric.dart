@@ -1,13 +1,15 @@
 /* Cat Logger Metric Page.*/
 import 'dart:collection';
-
 import 'package:catlogger/cat.dart';
 import 'package:catlogger/cat_settings.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:io';
+import 'dart:async';
 
 import 'home.dart';
 import 'user_settings.dart';
+import 'data_functions.dart';
 
 typedef WeightEntry = DropdownMenuEntry<Weightlabel>;
 
@@ -46,11 +48,28 @@ class _MyMetricPageState extends State<MyMetricPage> {
   double factor = 1;
   double? mer;
 
+  File? _image;
+  final CatImageDatabase _dbHelper = CatImageDatabase.instance;
+
   @override
   void initState() {
     super.initState();
 
     curr = widget.curr;
+    _loadImage();
+  }
+
+  Future<void> _loadImage() async {
+    final imageInfo = await _dbHelper.getCatImageById(curr["imageID"]);
+    if (imageInfo != null) {
+      setState(() {
+        _image = File(imageInfo.imagePath);
+      });
+    } else {
+      setState(() {
+        _image = null;
+      });
+    }
   }
 
   void _onItemTapped(int index) {
@@ -142,10 +161,10 @@ double getWeightIndex(Weightlabel label) {
                 Row(
                   children: <Widget>[
                     SizedBox(
-                      width: 80.0,
-                      height: 80.0,
                       child: CircleAvatar(
-                        // WIP
+                        radius: 40,
+                        foregroundImage: _image != null ? FileImage(_image!) : null,
+                        child: _image == null ? const Icon(Icons.photo, size: 50) : null,
                       ),
                     ),
                     const SizedBox(width: 16.0),
