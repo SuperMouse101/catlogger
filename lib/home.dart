@@ -113,9 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(width: 6),
                     // Image container WIP
                     SizedBox(
-                      width: 80.0,
-                      height: 80.0,
                       child: CircleAvatar(
+                        radius: 40,
                         foregroundImage: _image != null ? FileImage(_image!) : null,
                       ),
                     ),

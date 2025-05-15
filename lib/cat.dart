@@ -128,10 +128,10 @@ class _MyCatPageState extends State<MyCatPage> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    SizedBox(
-                      width: 80.0,
-                      height: 80.0,
+                    GestureDetector(
+                      onDoubleTap: () => _getImage(),
                       child: CircleAvatar(
+                        radius: 40,
                         foregroundImage: _image != null ? FileImage(_image!) : null,
                       ),
                     ),
